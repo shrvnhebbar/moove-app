@@ -19,6 +19,7 @@ const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 
 export default function WorkoutScreen() {
   const { history, saveWorkout } = useWorkouts();
   const [activeWorkout, setActiveWorkout] = useState(null);
+  const [timerRunning, setTimerRunning] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const timerRef = useRef(null);
 
@@ -27,18 +28,27 @@ export default function WorkoutScreen() {
   const [activeCategory, setActiveCategory] = useState("All");
 
   useEffect(() => {
-    if (activeWorkout) {
+    if (timerRunning) {
       timerRef.current = setInterval(() => setElapsed((e) => e + 1), 1000);
-      return () => clearInterval(timerRef.current);
+    } else if (timerRef.current) {
+      clearInterval(timerRef.current);
     }
-    setElapsed(0);
-  }, [activeWorkout]);
+    return () => clearInterval(timerRef.current);
+  }, [timerRunning]);
 
   const startWorkout = (template) => {
+    setElapsed(0);
+    setTimerRunning(false);
     setActiveWorkout({
       name: template ? template.name : "New Workout",
       exercises: (template ? template.exercises : []).map((n) => ({ id: Math.random().toString(36).slice(2), name: n, sets: [emptySet()] })),
     });
+  };
+
+  const closeWorkout = () => {
+    setTimerRunning(false);
+    setElapsed(0);
+    setActiveWorkout(null);
   };
 
   const openPicker = () => {
@@ -91,6 +101,8 @@ export default function WorkoutScreen() {
       volume,
       sets: setCount,
     });
+    setTimerRunning(false);
+    setElapsed(0);
     setActiveWorkout(null);
   };
 
@@ -172,12 +184,18 @@ export default function WorkoutScreen() {
       <SafeAreaView style={shared.screen} edges={["top"]}>
         <ScrollView contentContainerStyle={shared.content}>
           <View style={[shared.row, { marginBottom: 4 }]}>
-            <TouchableOpacity style={shared.iconBtn} onPress={() => setActiveWorkout(null)}>
+            <TouchableOpacity style={shared.iconBtn} onPress={closeWorkout}>
               <Feather name="x" size={17} color={colors.text} />
             </TouchableOpacity>
-            <View style={[shared.pill, shared.pillWarn]}>
-              <Text style={shared.pillWarnText}>{fmt(elapsed)}</Text>
-            </View>
+            <TouchableOpacity
+              style={[shared.pill, timerRunning ? shared.pillWarn : shared.pillOk, { flexDirection: "row", alignItems: "center", gap: 6 }]}
+              onPress={() => setTimerRunning((r) => !r)}
+            >
+              <Feather name={timerRunning ? "pause" : "play"} size={12} color={timerRunning ? colors.orange : colors.ok} />
+              <Text style={timerRunning ? shared.pillWarnText : shared.pillOkText}>
+                {elapsed === 0 && !timerRunning ? "Start" : fmt(elapsed)}
+              </Text>
+            </TouchableOpacity>
             <TouchableOpacity style={[shared.btn, shared.btnPrimary, { paddingVertical: 9, paddingHorizontal: 16 }]} onPress={finishWorkout}>
               <Text style={shared.btnPrimaryText}>Finish</Text>
             </TouchableOpacity>
