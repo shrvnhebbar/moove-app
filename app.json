@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "FORM",
+    "slug": "form-fitness-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0B0B0D",
+    "splash": {
+      "backgroundColor": "#0B0B0D"
+    },
+    "android": {
+      "package": "com.yourcompany.form",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B0B0D"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.yourcompany.form"
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
