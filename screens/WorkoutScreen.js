@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, ScrollView, TextInput, TouchableOpacity } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Modal, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Feather } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import { useWorkouts } from "../hooks/useWorkouts";
+import { EXERCISES, CATEGORIES } from "../data/exercises";
 
 const TEMPLATES = [
   { id: "t1", name: "Push Day", subtitle: "Chest · Shoulders · Triceps", exercises: ["Bench Press", "Overhead Press", "Tricep Pushdown"] },
@@ -18,9 +19,12 @@ const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 
 export default function WorkoutScreen() {
   const { history, saveWorkout } = useWorkouts();
   const [activeWorkout, setActiveWorkout] = useState(null);
-  const [exInput, setExInput] = useState("");
   const [elapsed, setElapsed] = useState(0);
   const timerRef = useRef(null);
+
+  const [pickerVisible, setPickerVisible] = useState(false);
+  const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState("All");
 
   useEffect(() => {
     if (activeWorkout) {
@@ -37,11 +41,26 @@ export default function WorkoutScreen() {
     });
   };
 
-  const addExercise = () => {
-    if (!exInput.trim()) return;
-    setActiveWorkout((w) => ({ ...w, exercises: [...w.exercises, { id: Math.random().toString(36).slice(2), name: exInput.trim(), sets: [emptySet()] }] }));
-    setExInput("");
+  const openPicker = () => {
+    setSearch("");
+    setActiveCategory("All");
+    setPickerVisible(true);
   };
+
+  const selectExercise = (exercise) => {
+    setActiveWorkout((w) => ({
+      ...w,
+      exercises: [...w.exercises, { id: Math.random().toString(36).slice(2), name: exercise.name, sets: [emptySet()] }],
+    }));
+    setPickerVisible(false);
+  };
+
+  const filteredExercises = EXERCISES.filter((e) => {
+    const matchesSearch = e.name.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = activeCategory === "All" || e.category === activeCategory;
+    return matchesSearch && matchesCategory;
+  });
+
   const addSet = (exId) => setActiveWorkout((w) => ({ ...w, exercises: w.exercises.map((ex) => (ex.id === exId ? { ...ex, sets: [...ex.sets, emptySet()] } : ex)) }));
   const updateSet = (exId, setId, field, value) =>
     setActiveWorkout((w) => ({
@@ -75,10 +94,83 @@ export default function WorkoutScreen() {
     setActiveWorkout(null);
   };
 
+  const ExercisePickerModal = (
+    <Modal visible={pickerVisible} animationType="slide" onRequestClose={() => setPickerVisible(false)}>
+      <SafeAreaView style={shared.screen} edges={["top"]}>
+        <View style={[shared.row, { paddingHorizontal: 18, paddingTop: 12, paddingBottom: 4 }]}>
+          <Text style={shared.h2}>Add Exercise</Text>
+          <TouchableOpacity style={shared.iconBtn} onPress={() => setPickerVisible(false)}>
+            <Feather name="x" size={18} color={colors.text} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ paddingHorizontal: 18, paddingTop: 12 }}>
+          <TextInput
+            style={shared.input}
+            placeholder="Search exercises"
+            placeholderTextColor={colors.dim2}
+            value={search}
+            onChangeText={setSearch}
+          />
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginTop: 12, paddingLeft: 18, height: 44, flexGrow: 0, flexShrink: 0 }}
+          contentContainerStyle={{ alignItems: "center" }}
+        >
+          {CATEGORIES.map((cat) => {
+            const active = cat === activeCategory;
+            return (
+              <TouchableOpacity
+                key={cat}
+                onPress={() => setActiveCategory(cat)}
+                style={{
+                  paddingVertical: 9, paddingHorizontal: 14, borderRadius: 20, marginRight: 8,
+                  backgroundColor: active ? colors.accent : colors.surface2,
+                  borderWidth: 1, borderColor: active ? colors.accent : colors.border,
+                  alignItems: "center", justifyContent: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 12.5, fontWeight: "600", color: active ? colors.accentInk : colors.dim,
+                    lineHeight: 16, includeFontPadding: false, textAlignVertical: "center",
+                  }}
+                >
+                  {cat}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+
+        <FlatList
+          data={filteredExercises}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingHorizontal: 18, paddingTop: 14, paddingBottom: 40 }}
+          ListEmptyComponent={<Text style={shared.label}>No exercises match "{search}".</Text>}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={[shared.card, { marginBottom: 10 }]} onPress={() => selectExercise(item)}>
+              <View style={shared.row}>
+                <View>
+                  <Text style={{ color: colors.text, fontWeight: "600", fontSize: 14.5 }}>{item.name}</Text>
+                  <Text style={[shared.label, { marginTop: 3 }]}>{item.category} · {item.equipment}</Text>
+                </View>
+                <Feather name="plus-circle" size={20} color={colors.accent} />
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </SafeAreaView>
+    </Modal>
+  );
+
   if (activeWorkout) {
     return (
       <SafeAreaView style={shared.screen} edges={["top"]}>
-        <ScrollView style={shared.screen} contentContainerStyle={shared.content}>
+        <ScrollView contentContainerStyle={shared.content}>
           <View style={[shared.row, { marginBottom: 4 }]}>
             <TouchableOpacity style={shared.iconBtn} onPress={() => setActiveWorkout(null)}>
               <Feather name="x" size={17} color={colors.text} />
@@ -139,23 +231,20 @@ export default function WorkoutScreen() {
             </View>
           ))}
 
-          <View style={{ flexDirection: "row", gap: 8 }}>
-            <TextInput
-              style={[shared.input, { flex: 1 }]} placeholder="Exercise name" placeholderTextColor={colors.dim2}
-              value={exInput} onChangeText={setExInput} onSubmitEditing={addExercise}
-            />
-            <TouchableOpacity style={[shared.btn, shared.btnPrimary, { paddingHorizontal: 16 }]} onPress={addExercise}>
-              <Feather name="plus" size={16} color={colors.accentInk} />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={[shared.btn, shared.btnPrimary]} onPress={openPicker}>
+            <Feather name="plus" size={16} color={colors.accentInk} />
+            <Text style={shared.btnPrimaryText}>Add Exercise</Text>
+          </TouchableOpacity>
         </ScrollView>
+
+        {ExercisePickerModal}
       </SafeAreaView>
     );
   }
 
   return (
     <SafeAreaView style={shared.screen} edges={["top"]}>
-      <ScrollView style={shared.screen} contentContainerStyle={shared.content}>
+      <ScrollView contentContainerStyle={shared.content}>
         <Text style={[shared.h1, { marginBottom: 16, marginTop: 8 }]}>Workout</Text>
         <TouchableOpacity style={[shared.btn, shared.btnPrimary, { marginBottom: 22, paddingVertical: 16 }]} onPress={() => startWorkout(null)}>
           <Feather name="play" size={16} color={colors.accentInk} />
