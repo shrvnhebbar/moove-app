@@ -1,4 +1,4 @@
-# FORM — fitness + nutrition tracker (Expo / React Native)
+# MOOVE — fitness + nutrition tracker (Expo / React Native)
 
 Cross-platform prototype combining Cronometer-style nutrition tracking with
 Hevy-style workout logging. Dark theme with a lime accent, matching the
