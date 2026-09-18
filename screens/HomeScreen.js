@@ -8,6 +8,8 @@ import { shared } from "../theme/shared";
 import Ring from "../components/Ring";
 import { useAuth } from "../context/AuthContext";
 import { useMeals } from "../hooks/useMeals";
+import { usePersonalInfo } from "../hooks/usePersonalInfo";
+import { calcBMI, bmiCategory } from "../utils/bodyMetrics";
 
 // Steps/calories-burned/active-minutes are mocked for now. Swap for Google Fit /
 // Apple HealthKit (e.g. via react-native-health-connect) once device sensor
@@ -21,17 +23,18 @@ const DAY_STATS = [
   { day: "Sat", date: 13, steps: 4700, distance: 3.5, kcalBurn: 178, mins: 60 },
   { day: "Sun", date: 14, steps: 3900, distance: 2.9, kcalBurn: 142, mins: 47 },
 ];
-const WEIGHT_TREND = [74.6, 74.1, 73.8, 73.2, 72.9, 72.6, 72.4];
 const CALORIE_GOAL = 2200;
 
 export default function HomeScreen({ navigation }) {
   const { user } = useAuth();
+  const { info } = usePersonalInfo();
   const { totals } = useMeals();
   const [selectedDay, setSelectedDay] = useState(4);
   const today = DAY_STATS[selectedDay];
   const maxSteps = Math.max(...DAY_STATS.map((d) => d.steps));
   const calPct = totals.kcal / CALORIE_GOAL;
-  const firstName = (user?.displayName || "there").split(" ")[0];
+  const firstName = (info.name || user?.displayName || "there").split(" ")[0];
+  const bmi = calcBMI(info.weightKg, info.heightCm);
 
   return (
     <SafeAreaView style={shared.screen} edges={["top"]}>
@@ -137,24 +140,28 @@ export default function HomeScreen({ navigation }) {
           </View>
         </TouchableOpacity>
 
-        <Text style={[shared.h3, { marginTop: 20, marginBottom: 12 }]}>Weight Trend</Text>
-        <View style={shared.card}>
-          <View style={[shared.row, { marginBottom: 8 }]}>
-            <Text style={shared.num}>
-              <Text style={{ fontSize: 20 }}>{WEIGHT_TREND[6]}</Text>
-              <Text style={{ fontSize: 12, fontWeight: "500", color: colors.dim }}> kg avg</Text>
-            </Text>
-            <View style={[shared.pill, shared.pillOk]}>
-              <Text style={shared.pillOkText}>↓ 2.2kg</Text>
+              <Text style={[shared.h3, { marginTop: 20, marginBottom: 12 }]}>Current Weight</Text>
+      <View style={shared.card}>
+        {info.weightKg ? (
+          <View style={shared.row}>
+            <View>
+              <Text style={shared.num}>
+                <Text style={{ fontSize: 22 }}>{info.weightKg}</Text>
+                <Text style={{ fontSize: 13, fontWeight: "500", color: colors.dim }}> kg</Text>
+              </Text>
+              {bmi && <Text style={[shared.label, { marginTop: 4 }]}>BMI {bmi.toFixed(1)} · {bmiCategory(bmi)}</Text>}
             </View>
+            <TouchableOpacity style={[shared.pill, shared.pillOk]} onPress={() => navigation.navigate("Profile")}>
+              <Text style={shared.pillOkText}>Update</Text>
+            </TouchableOpacity>
           </View>
-          <Svg width="100%" height={50} viewBox="0 0 320 50">
-            <Polyline
-              points={WEIGHT_TREND.map((w, i) => `${(i / 6) * 310 + 5},${50 - ((w - 71.5) / 3.5) * 44 - 3}`).join(" ")}
-              fill="none" stroke={colors.accent} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
-            />
-          </Svg>
-        </View>
+        ) : (
+          <TouchableOpacity style={shared.row} onPress={() => navigation.navigate("Profile")}>
+            <Text style={shared.label}>Add your weight in Profile → Personal Information to see it here.</Text>
+            <Feather name="chevron-right" size={16} color={colors.dim} />
+          </TouchableOpacity>
+        )}
+      </View>
       </ScrollView>
     </SafeAreaView>
   );
