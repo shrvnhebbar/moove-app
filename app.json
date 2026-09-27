@@ -1,9 +1,10 @@
 {
   "expo": {
-    "name": "FORM",
+    "name": "MOOVE",
     "slug": "form-fitness-app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0B0B0D",
     "splash": {
@@ -12,6 +13,7 @@
     "android": {
       "package": "com.yourcompany.form",
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0B0B0D"
       }
     },

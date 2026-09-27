@@ -9,7 +9,7 @@ import Ring from "../components/Ring";
 import { useAuth } from "../context/AuthContext";
 import { useMeals } from "../hooks/useMeals";
 import { usePersonalInfo } from "../hooks/usePersonalInfo";
-import { calcBMI, bmiCategory } from "../utils/bodyMetrics";
+import TrendsScreen from "./TrendsScreen";
 
 // Steps/calories-burned/active-minutes are mocked for now. Swap for Google Fit /
 // Apple HealthKit (e.g. via react-native-health-connect) once device sensor
@@ -30,11 +30,11 @@ export default function HomeScreen({ navigation }) {
   const { info } = usePersonalInfo();
   const { totals } = useMeals();
   const [selectedDay, setSelectedDay] = useState(4);
+  const [trendsVisible, setTrendsVisible] = useState(false);
   const today = DAY_STATS[selectedDay];
   const maxSteps = Math.max(...DAY_STATS.map((d) => d.steps));
   const calPct = totals.kcal / CALORIE_GOAL;
   const firstName = (info.name || user?.displayName || "there").split(" ")[0];
-  const bmi = calcBMI(info.weightKg, info.heightCm);
 
   return (
     <SafeAreaView style={shared.screen} edges={["top"]}>
@@ -139,30 +139,19 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </TouchableOpacity>
-
-              <Text style={[shared.h3, { marginTop: 20, marginBottom: 12 }]}>Current Weight</Text>
-      <View style={shared.card}>
-        {info.weightKg ? (
-          <View style={shared.row}>
+        <Text style={[shared.h3, { marginTop: 20, marginBottom: 12 }]}>Trends</Text>
+        <TouchableOpacity style={[shared.card, shared.row]} onPress={() => setTrendsVisible(true)}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <Feather name="trending-up" size={18} color={colors.accent} />
             <View>
-              <Text style={shared.num}>
-                <Text style={{ fontSize: 22 }}>{info.weightKg}</Text>
-                <Text style={{ fontSize: 13, fontWeight: "500", color: colors.dim }}> kg</Text>
-              </Text>
-              {bmi && <Text style={[shared.label, { marginTop: 4 }]}>BMI {bmi.toFixed(1)} · {bmiCategory(bmi)}</Text>}
+              <Text style={{ color: colors.text, fontWeight: "600", fontSize: 14.5 }}>View Trends</Text>
+              <Text style={shared.label}>Body weight, body fat %, exercise progress</Text>
             </View>
-            <TouchableOpacity style={[shared.pill, shared.pillOk]} onPress={() => navigation.navigate("Profile")}>
-              <Text style={shared.pillOkText}>Update</Text>
-            </TouchableOpacity>
           </View>
-        ) : (
-          <TouchableOpacity style={shared.row} onPress={() => navigation.navigate("Profile")}>
-            <Text style={shared.label}>Add your weight in Profile → Personal Information to see it here.</Text>
-            <Feather name="chevron-right" size={16} color={colors.dim} />
-          </TouchableOpacity>
-        )}
-      </View>
+          <Feather name="chevron-right" size={16} color={colors.dim} />
+        </TouchableOpacity>
       </ScrollView>
+      <TrendsScreen visible={trendsVisible} onClose={() => setTrendsVisible(false)} />
     </SafeAreaView>
   );
 }

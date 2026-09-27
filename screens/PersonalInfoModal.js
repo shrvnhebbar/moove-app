@@ -5,10 +5,12 @@ import { Feather } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import { usePersonalInfo } from "../hooks/usePersonalInfo";
+import { useLogMetric } from "../hooks/useMetricLogs";
 import { calcBMI, bmiCategory, calcFatMass, calcLeanMass, calcMuscleMassEstimate } from "../utils/bodyMetrics";
 
 export default function PersonalInfoModal({ visible, onClose }) {
   const { info, savePersonalInfo } = usePersonalInfo();
+  const logMetric = useLogMetric();
   const [form, setForm] = useState(info);
   const [saving, setSaving] = useState(false);
 
@@ -28,6 +30,8 @@ export default function PersonalInfoModal({ visible, onClose }) {
     setSaving(true);
     try {
       await savePersonalInfo(form);
+      await logMetric("weight", form.weightKg);
+      await logMetric("bodyFat", form.bodyFatPct);
       onClose();
     } catch (e) {
       Alert.alert("Couldn't save", e.message);
