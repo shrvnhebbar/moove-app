@@ -67,7 +67,12 @@ export default function WorkoutScreen() {
     setPickerMode(mode);
     setSearch("");
     setActiveCategory("All");
-    setPendingSelectedIds([]);
+    if (mode === "template") {
+      const existingIds = builderExercises.map((e) => e.id);
+      setPendingSelectedIds(existingIds);
+    } else {
+      setPendingSelectedIds([]);
+    }
     setPickerVisible(true);
   };
 
