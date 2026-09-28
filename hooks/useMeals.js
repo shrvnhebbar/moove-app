@@ -3,8 +3,8 @@ import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useAuth } from "../context/AuthContext";
 
-const MEAL_NAMES = ["Breakfast", "Lunch", "Dinner", "Snacks"];
-const emptyDay = () => ({ Breakfast: [], Lunch: [], Dinner: [], Snacks: [] });
+export const MEAL_NAMES = ["Uncategorized", "Breakfast", "Lunch", "Dinner"];
+const emptyDay = () => ({ Uncategorized: [], Breakfast: [], Lunch: [], Dinner: [] });
 
 function todayKey() {
   const d = new Date();
@@ -46,9 +46,15 @@ export function useMeals() {
     [user, meals, dayId]
   );
 
-  const totals = Object.values(meals)
+  const rawTotals = Object.values(meals)
     .flat()
     .reduce((acc, f) => ({ kcal: acc.kcal + (f.kcal || 0), p: acc.p + (f.p || 0), c: acc.c + (f.c || 0), f: acc.f + (f.f || 0) }), { kcal: 0, p: 0, c: 0, f: 0 });
+  const totals = {
+    kcal: Math.round(rawTotals.kcal),
+    p: Math.round(rawTotals.p * 10) / 10,
+    c: Math.round(rawTotals.c * 10) / 10,
+    f: Math.round(rawTotals.f * 10) / 10,
+  };
 
   return { meals, totals, addFood, removeFood, loading };
 }

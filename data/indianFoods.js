@@ -1,0 +1,150 @@
+// Static Indian food database for the Nutrition "Add Food" picker.
+// Each entry gives macros for `baseQty` of `unit` (e.g. per 100g, or per 1 piece).
+// Scaling: factor = enteredQty / baseQty, then kcal/p/c/f *= factor.
+export const FOOD_CATEGORIES = [
+  "Grains & Cereals",
+  "Pulses & Legumes",
+  "Vegetables",
+  "Fruits",
+  "Dairy & Eggs",
+  "Meat, Fish & Poultry",
+  "Prepared Dishes",
+  "Breads",
+  "Snacks & Sweets",
+  "Nuts & Seeds",
+  "Beverages",
+];
+
+export const INDIAN_FOODS = [
+  // Grains & Cereals
+  { id: "f1", name: "White Rice, cooked", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 130, p: 2.7, c: 28, f: 0.3 },
+  { id: "f2", name: "White Rice, raw", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 365, p: 7.1, c: 80, f: 0.7 },
+  { id: "f3", name: "Brown Rice, cooked", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 123, p: 2.7, c: 25.6, f: 1 },
+  { id: "f4", name: "Wheat Flour (Atta), raw", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 340, p: 12, c: 71, f: 1.7 },
+  { id: "f5", name: "Dalia (Broken Wheat), cooked", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 90, p: 3.5, c: 18, f: 0.5 },
+  { id: "f6", name: "Semolina (Sooji), raw", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 360, p: 10.4, c: 74, f: 1 },
+  { id: "f7", name: "Oats, cooked", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 68, p: 2.5, c: 12, f: 1.4 },
+  { id: "f8", name: "Ragi Flour, raw", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 328, p: 7.3, c: 72, f: 1.3 },
+  { id: "f9", name: "Bajra Flour, raw", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 361, p: 11.6, c: 67, f: 5 },
+  { id: "f10", name: "Jowar Flour, raw", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 349, p: 10.4, c: 72.6, f: 1.9 },
+  { id: "f11", name: "Poha (flattened rice), raw", category: "Grains & Cereals", unit: "g", baseQty: 100, kcal: 346, p: 6.6, c: 77, f: 1 },
+
+  // Pulses & Legumes
+  { id: "f12", name: "Toor Dal, cooked", category: "Pulses & Legumes", unit: "g", baseQty: 100, kcal: 120, p: 7, c: 20, f: 1 },
+  { id: "f13", name: "Moong Dal, cooked", category: "Pulses & Legumes", unit: "g", baseQty: 100, kcal: 105, p: 7.5, c: 17, f: 0.5 },
+  { id: "f14", name: "Chana Dal, cooked", category: "Pulses & Legumes", unit: "g", baseQty: 100, kcal: 134, p: 8, c: 22, f: 1.5 },
+  { id: "f15", name: "Masoor Dal, cooked", category: "Pulses & Legumes", unit: "g", baseQty: 100, kcal: 116, p: 9, c: 20, f: 0.4 },
+  { id: "f16", name: "Urad Dal, cooked", category: "Pulses & Legumes", unit: "g", baseQty: 100, kcal: 120, p: 8, c: 20, f: 0.5 },
+  { id: "f17", name: "Rajma (Kidney Beans), cooked", category: "Pulses & Legumes", unit: "g", baseQty: 100, kcal: 127, p: 8.7, c: 22.8, f: 0.5 },
+  { id: "f18", name: "Chickpeas (Chana), boiled", category: "Pulses & Legumes", unit: "g", baseQty: 100, kcal: 164, p: 8.9, c: 27.4, f: 2.6 },
+  { id: "f19", name: "Moong Sprouts, raw", category: "Pulses & Legumes", unit: "g", baseQty: 100, kcal: 30, p: 3, c: 6, f: 0.2 },
+  { id: "f20", name: "Soybean, cooked", category: "Pulses & Legumes", unit: "g", baseQty: 100, kcal: 173, p: 16.6, c: 9.9, f: 9 },
+
+  // Vegetables
+  { id: "f21", name: "Potato, boiled", category: "Vegetables", unit: "g", baseQty: 100, kcal: 87, p: 1.9, c: 20, f: 0.1 },
+  { id: "f22", name: "Tomato, raw", category: "Vegetables", unit: "g", baseQty: 100, kcal: 18, p: 0.9, c: 3.9, f: 0.2 },
+  { id: "f23", name: "Onion, raw", category: "Vegetables", unit: "g", baseQty: 100, kcal: 40, p: 1.1, c: 9.3, f: 0.1 },
+  { id: "f24", name: "Spinach (Palak), cooked", category: "Vegetables", unit: "g", baseQty: 100, kcal: 23, p: 2.9, c: 3.6, f: 0.4 },
+  { id: "f25", name: "Cauliflower, cooked", category: "Vegetables", unit: "g", baseQty: 100, kcal: 25, p: 1.9, c: 5, f: 0.3 },
+  { id: "f26", name: "Cabbage, cooked", category: "Vegetables", unit: "g", baseQty: 100, kcal: 25, p: 1.3, c: 5.8, f: 0.1 },
+  { id: "f27", name: "Carrot, raw", category: "Vegetables", unit: "g", baseQty: 100, kcal: 41, p: 0.9, c: 9.6, f: 0.2 },
+  { id: "f28", name: "Green Peas, cooked", category: "Vegetables", unit: "g", baseQty: 100, kcal: 84, p: 5.4, c: 14, f: 0.4 },
+  { id: "f29", name: "Bhindi (Okra), cooked", category: "Vegetables", unit: "g", baseQty: 100, kcal: 35, p: 2, c: 7.5, f: 0.2 },
+  { id: "f30", name: "Baingan (Brinjal), cooked", category: "Vegetables", unit: "g", baseQty: 100, kcal: 35, p: 1, c: 8.6, f: 0.2 },
+  { id: "f31", name: "Mixed Veg Sabzi", category: "Vegetables", unit: "g", baseQty: 100, kcal: 90, p: 2.5, c: 10, f: 4.5 },
+  { id: "f32", name: "Cucumber, raw", category: "Vegetables", unit: "g", baseQty: 100, kcal: 15, p: 0.7, c: 3.6, f: 0.1 },
+
+  // Fruits
+  { id: "f33", name: "Banana", category: "Fruits", unit: "g", baseQty: 100, kcal: 89, p: 1.1, c: 22.8, f: 0.3 },
+  { id: "f34", name: "Apple", category: "Fruits", unit: "g", baseQty: 100, kcal: 52, p: 0.3, c: 13.8, f: 0.2 },
+  { id: "f35", name: "Mango", category: "Fruits", unit: "g", baseQty: 100, kcal: 60, p: 0.8, c: 15, f: 0.4 },
+  { id: "f36", name: "Papaya", category: "Fruits", unit: "g", baseQty: 100, kcal: 43, p: 0.5, c: 10.8, f: 0.3 },
+  { id: "f37", name: "Orange", category: "Fruits", unit: "g", baseQty: 100, kcal: 47, p: 0.9, c: 11.8, f: 0.1 },
+  { id: "f38", name: "Guava", category: "Fruits", unit: "g", baseQty: 100, kcal: 68, p: 2.6, c: 14.3, f: 1 },
+  { id: "f39", name: "Watermelon", category: "Fruits", unit: "g", baseQty: 100, kcal: 30, p: 0.6, c: 7.6, f: 0.2 },
+  { id: "f40", name: "Grapes", category: "Fruits", unit: "g", baseQty: 100, kcal: 69, p: 0.7, c: 18, f: 0.2 },
+  { id: "f41", name: "Pomegranate", category: "Fruits", unit: "g", baseQty: 100, kcal: 83, p: 1.7, c: 18.7, f: 1.2 },
+
+  // Dairy & Eggs
+  { id: "f42", name: "Whole Milk", category: "Dairy & Eggs", unit: "ml", baseQty: 250, kcal: 150, p: 8, c: 12, f: 8 },
+  { id: "f43", name: "Toned Milk", category: "Dairy & Eggs", unit: "ml", baseQty: 250, kcal: 120, p: 8.5, c: 12, f: 4.5 },
+  { id: "f44", name: "Curd (Dahi)", category: "Dairy & Eggs", unit: "g", baseQty: 100, kcal: 60, p: 3.5, c: 4.7, f: 3.3 },
+  { id: "f45", name: "Buttermilk (Chaas)", category: "Dairy & Eggs", unit: "ml", baseQty: 250, kcal: 40, p: 2, c: 4, f: 1.5 },
+  { id: "f46", name: "Paneer, raw", category: "Dairy & Eggs", unit: "g", baseQty: 100, kcal: 265, p: 18.3, c: 1.2, f: 20.8 },
+  { id: "f47", name: "Egg, boiled", category: "Dairy & Eggs", unit: "piece", baseQty: 1, kcal: 78, p: 6.3, c: 0.6, f: 5.3 },
+  { id: "f48", name: "Egg White, boiled", category: "Dairy & Eggs", unit: "piece", baseQty: 1, kcal: 17, p: 3.6, c: 0.2, f: 0.05 },
+  { id: "f49", name: "Cheese Slice", category: "Dairy & Eggs", unit: "piece", baseQty: 1, kcal: 65, p: 4, c: 0.5, f: 5 },
+  { id: "f50", name: "Ghee", category: "Dairy & Eggs", unit: "g", baseQty: 13, kcal: 112, p: 0, c: 0, f: 12.7 },
+  { id: "f51", name: "Butter", category: "Dairy & Eggs", unit: "g", baseQty: 14, kcal: 100, p: 0.1, c: 0, f: 11.4 },
+
+  // Meat, Fish & Poultry
+  { id: "f52", name: "Chicken Breast, cooked", category: "Meat, Fish & Poultry", unit: "g", baseQty: 100, kcal: 165, p: 31, c: 0, f: 3.6 },
+  { id: "f53", name: "Chicken Curry", category: "Meat, Fish & Poultry", unit: "g", baseQty: 100, kcal: 180, p: 15, c: 6, f: 11 },
+  { id: "f54", name: "Mutton Curry", category: "Meat, Fish & Poultry", unit: "g", baseQty: 100, kcal: 220, p: 18, c: 5, f: 14 },
+  { id: "f55", name: "Fish Curry", category: "Meat, Fish & Poultry", unit: "g", baseQty: 100, kcal: 150, p: 17, c: 4, f: 7 },
+  { id: "f56", name: "Fried Fish", category: "Meat, Fish & Poultry", unit: "g", baseQty: 100, kcal: 210, p: 20, c: 6, f: 12 },
+  { id: "f57", name: "Prawn Curry", category: "Meat, Fish & Poultry", unit: "g", baseQty: 100, kcal: 140, p: 16, c: 5, f: 6 },
+  { id: "f58", name: "Egg Curry", category: "Meat, Fish & Poultry", unit: "g", baseQty: 100, kcal: 160, p: 9, c: 6, f: 11 },
+
+  // Prepared Dishes
+  { id: "f59", name: "Chicken Biryani", category: "Prepared Dishes", unit: "g", baseQty: 300, kcal: 550, p: 25, c: 65, f: 20 },
+  { id: "f60", name: "Veg Biryani", category: "Prepared Dishes", unit: "g", baseQty: 300, kcal: 420, p: 8, c: 60, f: 16 },
+  { id: "f61", name: "Mutton Biryani", category: "Prepared Dishes", unit: "g", baseQty: 300, kcal: 600, p: 28, c: 62, f: 25 },
+  { id: "f62", name: "Dal Makhani", category: "Prepared Dishes", unit: "g", baseQty: 200, kcal: 320, p: 10, c: 28, f: 19 },
+  { id: "f63", name: "Paneer Butter Masala", category: "Prepared Dishes", unit: "g", baseQty: 200, kcal: 400, p: 14, c: 15, f: 32 },
+  { id: "f64", name: "Chole Masala", category: "Prepared Dishes", unit: "g", baseQty: 200, kcal: 280, p: 10, c: 35, f: 11 },
+  { id: "f65", name: "Rajma Chawal", category: "Prepared Dishes", unit: "g", baseQty: 350, kcal: 420, p: 14, c: 68, f: 9 },
+  { id: "f66", name: "Sambar", category: "Prepared Dishes", unit: "g", baseQty: 200, kcal: 120, p: 5, c: 18, f: 3 },
+  { id: "f67", name: "Curd Rice", category: "Prepared Dishes", unit: "g", baseQty: 250, kcal: 250, p: 7, c: 40, f: 6 },
+  { id: "f68", name: "Lemon Rice", category: "Prepared Dishes", unit: "g", baseQty: 200, kcal: 280, p: 5, c: 45, f: 9 },
+  { id: "f69", name: "Veg Pulao", category: "Prepared Dishes", unit: "g", baseQty: 250, kcal: 350, p: 6, c: 55, f: 11 },
+  { id: "f70", name: "Egg Fried Rice", category: "Prepared Dishes", unit: "g", baseQty: 250, kcal: 400, p: 14, c: 55, f: 13 },
+  { id: "f71", name: "Chicken Fried Rice", category: "Prepared Dishes", unit: "g", baseQty: 300, kcal: 480, p: 22, c: 58, f: 16 },
+  { id: "f72", name: "Palak Paneer", category: "Prepared Dishes", unit: "g", baseQty: 200, kcal: 300, p: 12, c: 10, f: 24 },
+  { id: "f73", name: "Kadai Chicken", category: "Prepared Dishes", unit: "g", baseQty: 200, kcal: 320, p: 24, c: 8, f: 21 },
+  { id: "f74", name: "Butter Chicken", category: "Prepared Dishes", unit: "g", baseQty: 200, kcal: 380, p: 22, c: 10, f: 27 },
+  { id: "f75", name: "Vegetable Khichdi", category: "Prepared Dishes", unit: "g", baseQty: 250, kcal: 280, p: 9, c: 48, f: 6 },
+  { id: "f76", name: "Poha (prepared)", category: "Prepared Dishes", unit: "g", baseQty: 150, kcal: 250, p: 5, c: 42, f: 7 },
+  { id: "f77", name: "Upma", category: "Prepared Dishes", unit: "g", baseQty: 150, kcal: 220, p: 5, c: 32, f: 8 },
+  { id: "f78", name: "Misal Pav", category: "Prepared Dishes", unit: "g", baseQty: 250, kcal: 400, p: 14, c: 50, f: 15 },
+
+  // Breads
+  { id: "f79", name: "Roti / Chapati", category: "Breads", unit: "piece", baseQty: 1, kcal: 104, p: 3, c: 18, f: 2.5 },
+  { id: "f80", name: "Naan", category: "Breads", unit: "piece", baseQty: 1, kcal: 260, p: 8, c: 45, f: 5 },
+  { id: "f81", name: "Paratha, plain", category: "Breads", unit: "piece", baseQty: 1, kcal: 210, p: 4.5, c: 27, f: 9.5 },
+  { id: "f82", name: "Aloo Paratha", category: "Breads", unit: "piece", baseQty: 1, kcal: 280, p: 6, c: 40, f: 10 },
+  { id: "f83", name: "Puri", category: "Breads", unit: "piece", baseQty: 1, kcal: 100, p: 2, c: 11, f: 5.5 },
+  { id: "f84", name: "Bhatura", category: "Breads", unit: "piece", baseQty: 1, kcal: 280, p: 6, c: 35, f: 12 },
+  { id: "f85", name: "Dosa, plain", category: "Breads", unit: "piece", baseQty: 1, kcal: 168, p: 3.9, c: 29, f: 3.7 },
+  { id: "f86", name: "Masala Dosa", category: "Breads", unit: "piece", baseQty: 1, kcal: 280, p: 6, c: 40, f: 10 },
+  { id: "f87", name: "Idli", category: "Breads", unit: "piece", baseQty: 1, kcal: 58, p: 2, c: 12, f: 0.2 },
+  { id: "f88", name: "Vada (Medu Vada)", category: "Breads", unit: "piece", baseQty: 1, kcal: 150, p: 4, c: 15, f: 8 },
+  { id: "f89", name: "Uttapam", category: "Breads", unit: "piece", baseQty: 1, kcal: 200, p: 5, c: 32, f: 6 },
+  { id: "f90", name: "White Bread Slice", category: "Breads", unit: "piece", baseQty: 1, kcal: 66, p: 2.3, c: 12.5, f: 0.8 },
+  { id: "f91", name: "Brown Bread Slice", category: "Breads", unit: "piece", baseQty: 1, kcal: 65, p: 2.7, c: 11.5, f: 1 },
+
+  // Snacks & Sweets
+  { id: "f92", name: "Samosa", category: "Snacks & Sweets", unit: "piece", baseQty: 1, kcal: 260, p: 3.5, c: 24, f: 17 },
+  { id: "f93", name: "Pakora / Bhajji", category: "Snacks & Sweets", unit: "g", baseQty: 100, kcal: 315, p: 6, c: 30, f: 19 },
+  { id: "f94", name: "Vada Pav", category: "Snacks & Sweets", unit: "piece", baseQty: 1, kcal: 290, p: 6, c: 40, f: 12 },
+  { id: "f95", name: "Dhokla", category: "Snacks & Sweets", unit: "g", baseQty: 100, kcal: 160, p: 5, c: 24, f: 5 },
+  { id: "f96", name: "Gulab Jamun", category: "Snacks & Sweets", unit: "piece", baseQty: 1, kcal: 150, p: 2, c: 20, f: 7 },
+  { id: "f97", name: "Jalebi", category: "Snacks & Sweets", unit: "g", baseQty: 100, kcal: 350, p: 2.5, c: 60, f: 12 },
+  { id: "f98", name: "Rasgulla", category: "Snacks & Sweets", unit: "piece", baseQty: 1, kcal: 106, p: 2, c: 22, f: 1 },
+  { id: "f99", name: "Besan Ladoo", category: "Snacks & Sweets", unit: "piece", baseQty: 1, kcal: 130, p: 3, c: 15, f: 6.5 },
+  { id: "f100", name: "Barfi", category: "Snacks & Sweets", unit: "piece", baseQty: 1, kcal: 120, p: 2, c: 15, f: 6 },
+  { id: "f101", name: "Namkeen Mixture", category: "Snacks & Sweets", unit: "g", baseQty: 100, kcal: 480, p: 15, c: 50, f: 25 },
+
+  // Nuts & Seeds
+  { id: "f102", name: "Almonds", category: "Nuts & Seeds", unit: "piece", baseQty: 10, kcal: 70, p: 2.6, c: 2.5, f: 6 },
+  { id: "f103", name: "Cashews", category: "Nuts & Seeds", unit: "piece", baseQty: 10, kcal: 85, p: 2.7, c: 4.7, f: 6.8 },
+  { id: "f104", name: "Walnuts", category: "Nuts & Seeds", unit: "piece", baseQty: 5, kcal: 98, p: 2.3, c: 2, f: 9.7 },
+  { id: "f105", name: "Peanuts, roasted", category: "Nuts & Seeds", unit: "g", baseQty: 100, kcal: 570, p: 26, c: 16, f: 48 },
+
+  // Beverages
+  { id: "f106", name: "Masala Chai", category: "Beverages", unit: "ml", baseQty: 150, kcal: 60, p: 1.5, c: 8, f: 2.5 },
+  { id: "f107", name: "Filter Coffee", category: "Beverages", unit: "ml", baseQty: 150, kcal: 55, p: 1.2, c: 7, f: 2 },
+  { id: "f108", name: "Sweet Lassi", category: "Beverages", unit: "ml", baseQty: 250, kcal: 200, p: 5, c: 30, f: 6 },
+  { id: "f109", name: "Coconut Water", category: "Beverages", unit: "ml", baseQty: 250, kcal: 45, p: 0.5, c: 9, f: 0.2 },
+  { id: "f110", name: "Fresh Lime Soda", category: "Beverages", unit: "ml", baseQty: 250, kcal: 95, p: 0, c: 24, f: 0 },
+];
