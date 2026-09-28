@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Feather } from "@expo/vector-icons";
+import { House, Dumbbell, Utensils, User } from "lucide-react-native";
 import HomeScreen from "../screens/HomeScreen";
 import WorkoutScreen from "../screens/WorkoutScreen";
 import NutritionScreen from "../screens/NutritionScreen";
@@ -9,7 +9,7 @@ import { colors } from "../theme/colors";
 
 const Tab = createBottomTabNavigator();
 
-const ICONS = { Home: "home", Workout: "activity", Nutrition: "coffee", Profile: "user" };
+const ICONS = { Home: House, Workout: Dumbbell, Nutrition: Utensils, Profile: User };
 
 export default function MainTabs() {
   return (
@@ -26,7 +26,10 @@ export default function MainTabs() {
           paddingBottom: 20,
         },
         tabBarLabelStyle: { fontSize: 10.5, fontWeight: "600" },
-        tabBarIcon: ({ color, size }) => <Feather name={ICONS[route.name]} size={20} color={color} />,
+        tabBarIcon: ({ color, size }) => {
+          const Icon = ICONS[route.name];
+          return <Icon size={20} color={color} />;
+        },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />

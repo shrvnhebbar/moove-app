@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { Polyline } from "react-native-svg";
-import { Feather } from "@expo/vector-icons";
+import { User, Bell, TrendingUp, ChevronRight, Zap, Clock } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import Ring from "../components/Ring";
@@ -42,14 +42,14 @@ export default function HomeScreen({ navigation }) {
         <View style={[shared.row, { marginTop: 6, marginBottom: 20 }]}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <View style={{ width: 42, height: 42, borderRadius: 21, backgroundColor: colors.surface2, borderWidth: 1, borderColor: colors.border, alignItems: "center", justifyContent: "center" }}>
-              <Feather name="user" size={20} color={colors.dim} />
+              <User size={20} color={colors.dim} />
             </View>
             <View>
               <Text style={{ color: colors.text, fontWeight: "600", fontSize: 15 }}>Hi, {firstName}</Text>
               <Text style={shared.label}>Welcome back!</Text>
             </View>
           </View>
-          <View style={shared.iconBtn}><Feather name="bell" size={17} color={colors.text} /></View>
+          <View style={shared.iconBtn}><Bell size={17} color={colors.text} /></View>
         </View>
 
         <View style={[shared.row, { marginBottom: 22 }]}>
@@ -73,10 +73,10 @@ export default function HomeScreen({ navigation }) {
         <View style={[shared.card, { marginBottom: 12 }]}>
           <View style={[shared.row, { marginBottom: 14 }]}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-              <Feather name="trending-up" size={16} color={colors.accent} />
+              <TrendingUp size={16} color={colors.accent} />
               <Text style={{ color: colors.text, fontWeight: "600", fontSize: 14.5 }}>Steps</Text>
             </View>
-            <Feather name="chevron-right" size={16} color={colors.dim} />
+            <ChevronRight size={16} color={colors.dim} />
           </View>
           <View style={[shared.row, { alignItems: "flex-end" }]}>
             <View>
@@ -97,14 +97,14 @@ export default function HomeScreen({ navigation }) {
         <View style={{ flexDirection: "row", gap: 12, marginBottom: 12 }}>
           <View style={[shared.card, { flex: 1 }]}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 10 }}>
-              <Feather name="zap" size={14} color={colors.orange} />
+              <Zap size={14} color={colors.orange} />
               <Text style={{ color: colors.text, fontWeight: "600", fontSize: 13 }}>Calories</Text>
             </View>
             <Ring pct={today.kcalBurn / 260} color={colors.orange} value={today.kcalBurn} sub="kcal" size={56} />
           </View>
           <View style={[shared.card, { flex: 1 }]}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 10 }}>
-              <Feather name="clock" size={14} color={colors.blue} />
+              <Clock size={14} color={colors.blue} />
               <Text style={{ color: colors.text, fontWeight: "600", fontSize: 13 }}>Duration</Text>
             </View>
             <Ring pct={today.mins / 90} color={colors.blue} value={today.mins} sub="mins" size={56} />
@@ -142,13 +142,13 @@ export default function HomeScreen({ navigation }) {
         <Text style={[shared.h3, { marginTop: 20, marginBottom: 12 }]}>Trends</Text>
         <TouchableOpacity style={[shared.card, shared.row]} onPress={() => setTrendsVisible(true)}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-            <Feather name="trending-up" size={18} color={colors.accent} />
+            <TrendingUp size={18} color={colors.accent} />
             <View>
               <Text style={{ color: colors.text, fontWeight: "600", fontSize: 14.5 }}>View Trends</Text>
               <Text style={shared.label}>Body weight, body fat %, exercise progress</Text>
             </View>
           </View>
-          <Feather name="chevron-right" size={16} color={colors.dim} />
+          <ChevronRight size={16} color={colors.dim} />
         </TouchableOpacity>
       </ScrollView>
       <TrendsScreen visible={trendsVisible} onClose={() => setTrendsVisible(false)} />

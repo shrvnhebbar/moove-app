@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
+import { Plus, X } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import Ring from "../components/Ring";
@@ -71,7 +71,7 @@ export default function NutritionScreen() {
                 style={[shared.iconBtn, { width: 30, height: 30, borderRadius: 9 }]}
                 onPress={() => setPickerMeal(mealName)}
               >
-                <Feather name="plus" size={15} color={colors.text} />
+                <Plus size={15} color={colors.text} />
               </TouchableOpacity>
             </View>
 
@@ -87,7 +87,7 @@ export default function NutritionScreen() {
                   <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                     <Text style={{ ...shared.num, fontSize: 13.5 }}>{f.kcal} kcal</Text>
                     <TouchableOpacity onPress={() => removeFood(mealName, f.id)}>
-                      <Feather name="x" size={14} color={colors.dim} />
+                      <X size={14} color={colors.dim} />
                     </TouchableOpacity>
                   </View>
                 </View>

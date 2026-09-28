@@ -44,9 +44,9 @@ export const shared = StyleSheet.create({
   btnGhost: { backgroundColor: colors.surface2 },
   btnGhostText: { color: colors.text, fontWeight: "600", fontSize: 13 },
   pill: { paddingVertical: 5, paddingHorizontal: 10, borderRadius: 20 },
-  pillOk: { backgroundColor: "rgba(143,227,154,0.14)" },
+  pillOk: { backgroundColor: "rgba(57,255,122,0.16)" },
   pillOkText: { color: colors.ok, fontSize: 11.5, fontWeight: "600" },
-  pillWarn: { backgroundColor: "rgba(255,122,69,0.14)" },
+  pillWarn: { backgroundColor: "rgba(255,122,26,0.16)" },
   pillWarnText: { color: colors.orange, fontSize: 11.5, fontWeight: "600" },
   checkbox: {
     width: 24, height: 24, borderRadius: 7, borderWidth: 1.5, borderColor: colors.border,

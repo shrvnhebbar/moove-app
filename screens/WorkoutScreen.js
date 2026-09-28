@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, ScrollView, TextInput, TouchableOpacity, Modal, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
+import {
+  X, SquareCheck, Square, Plus, Trash, CircleCheck, Circle,
+  Pause, Play, Check, Dumbbell, Star, CirclePlus, Save,
+} from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import { useWorkouts } from "../hooks/useWorkouts";
@@ -176,7 +179,7 @@ export default function WorkoutScreen() {
         <View style={[shared.row, { paddingHorizontal: 18, paddingTop: 12, paddingBottom: 4 }]}>
           <Text style={shared.h2}>Add Exercise</Text>
           <TouchableOpacity style={shared.iconBtn} onPress={() => setPickerVisible(false)}>
-            <Feather name="x" size={18} color={colors.text} />
+            <X size={18} color={colors.text} />
           </TouchableOpacity>
         </View>
 
@@ -243,7 +246,7 @@ export default function WorkoutScreen() {
                     <Text style={{ color: colors.text, fontWeight: "600", fontSize: 14.5 }}>{item.name}</Text>
                     <Text style={[shared.label, { marginTop: 3 }]}>{item.category} · {item.equipment}</Text>
                   </View>
-                  <Feather name={isPending ? "check-square" : "square"} size={20} color={isPending ? colors.accent : colors.dim} />
+                  {isPending ? <SquareCheck size={20} color={colors.accent} /> : <Square size={20} color={colors.dim} />}
                 </View>
               </TouchableOpacity>
             );
@@ -253,7 +256,7 @@ export default function WorkoutScreen() {
         {pendingSelectedIds.length > 0 && (
           <View style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: 18, paddingBottom: 28, backgroundColor: colors.bg, borderTopWidth: 1, borderTopColor: colors.border }}>
             <TouchableOpacity style={[shared.btn, shared.btnPrimary]} onPress={confirmAddSelected}>
-              <Feather name="plus" size={16} color={colors.accentInk} />
+              <Plus size={16} color={colors.accentInk} />
               <Text style={shared.btnPrimaryText}>Add {pendingSelectedIds.length} Exercise{pendingSelectedIds.length > 1 ? "s" : ""}</Text>
             </TouchableOpacity>
           </View>
@@ -269,7 +272,7 @@ export default function WorkoutScreen() {
           <View style={[shared.row, { paddingTop: 12, marginBottom: 16 }]}>
             <Text style={shared.h2}>New Template</Text>
             <TouchableOpacity style={shared.iconBtn} onPress={() => setBuilderVisible(false)}>
-              <Feather name="x" size={18} color={colors.text} />
+              <X size={18} color={colors.text} />
             </TouchableOpacity>
           </View>
 
@@ -291,13 +294,13 @@ export default function WorkoutScreen() {
                 <Text style={[shared.label, { marginTop: 2 }]}>{ex.category} · {ex.equipment}</Text>
               </View>
               <TouchableOpacity onPress={() => removeBuilderExercise(ex.id)}>
-                <Feather name="trash-2" size={15} color={colors.dim} />
+                <Trash size={15} color={colors.dim} />
               </TouchableOpacity>
             </View>
           ))}
 
           <TouchableOpacity style={[shared.btn, shared.btnGhost, { marginTop: 8, marginBottom: 24 }]} onPress={() => openPicker("template")}>
-            <Feather name="plus" size={14} color={colors.text} />
+            <Plus size={14} color={colors.text} />
             <Text style={shared.btnGhostText}>Add Exercise</Text>
           </TouchableOpacity>
 
@@ -306,6 +309,7 @@ export default function WorkoutScreen() {
             onPress={saveNewTemplate}
             disabled={!builderName.trim() || builderExercises.length === 0}
           >
+            <Save size={16} color={colors.accentInk} />
             <Text style={shared.btnPrimaryText}>Save Template</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -320,7 +324,7 @@ export default function WorkoutScreen() {
           <View style={[shared.row, { paddingTop: 12, marginBottom: 4 }]}>
             <Text style={shared.h2}>{selectedHistory?.name}</Text>
             <TouchableOpacity style={shared.iconBtn} onPress={() => setSelectedHistory(null)}>
-              <Feather name="x" size={18} color={colors.text} />
+              <X size={18} color={colors.text} />
             </TouchableOpacity>
           </View>
           <Text style={[shared.label, { marginBottom: 20 }]}>{selectedHistory?.date} · {selectedHistory?.duration}</Text>
@@ -358,7 +362,7 @@ export default function WorkoutScreen() {
                     <Text style={{ flex: 1, textAlign: "center", color: colors.text, fontSize: 13.5 }}>{s.weight || "-"}</Text>
                     <Text style={{ flex: 1, textAlign: "center", color: colors.text, fontSize: 13.5 }}>{s.reps || "-"}</Text>
                     <View style={{ width: 24, alignItems: "center" }}>
-                      <Feather name={s.done ? "check-circle" : "circle"} size={15} color={s.done ? colors.accent : colors.dim2} />
+                      {s.done ? <CircleCheck size={15} color={colors.accent} /> : <Circle size={15} color={colors.dim2} />}
                     </View>
                   </View>
                 ))}
@@ -376,18 +380,19 @@ export default function WorkoutScreen() {
         <ScrollView contentContainerStyle={shared.content}>
           <View style={[shared.row, { marginBottom: 4 }]}>
             <TouchableOpacity style={shared.iconBtn} onPress={closeWorkout}>
-              <Feather name="x" size={17} color={colors.text} />
+              <X size={17} color={colors.text} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[shared.pill, timerRunning ? shared.pillWarn : shared.pillOk, { flexDirection: "row", alignItems: "center", gap: 6 }]}
               onPress={() => setTimerRunning((r) => !r)}
             >
-              <Feather name={timerRunning ? "pause" : "play"} size={12} color={timerRunning ? colors.orange : colors.ok} />
+              {timerRunning ? <Pause size={12} color={colors.orange} /> : <Play size={12} color={colors.ok} />}
               <Text style={timerRunning ? shared.pillWarnText : shared.pillOkText}>
                 {elapsed === 0 && !timerRunning ? "Start" : fmt(elapsed)}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity style={[shared.btn, shared.btnPrimary, { paddingVertical: 9, paddingHorizontal: 16 }]} onPress={finishWorkout}>
+              <Check size={15} color={colors.accentInk} />
               <Text style={shared.btnPrimaryText}>Finish</Text>
             </TouchableOpacity>
           </View>
@@ -403,7 +408,7 @@ export default function WorkoutScreen() {
               <View style={[shared.row, { marginBottom: 10 }]}>
                 <Text style={{ color: colors.text, fontWeight: "600", fontSize: 14.5 }}>{ex.name}</Text>
                 <TouchableOpacity onPress={() => removeExercise(ex.id)}>
-                  <Feather name="trash-2" size={15} color={colors.dim} />
+                  <Trash size={15} color={colors.dim} />
                 </TouchableOpacity>
               </View>
               <View style={[shared.row, { marginBottom: 6, paddingLeft: 4 }]}>
@@ -429,19 +434,19 @@ export default function WorkoutScreen() {
                     style={[shared.checkbox, s.done && shared.checkboxDone]}
                     onPress={() => toggleDone(ex.id, s.id)}
                   >
-                    {s.done && <Feather name="check" size={14} color={colors.accentInk} />}
+                    {s.done && <Check size={14} color={colors.accentInk} />}
                   </TouchableOpacity>
                 </View>
               ))}
               <TouchableOpacity style={[shared.btn, shared.btnGhost, { paddingVertical: 9, marginTop: 4 }]} onPress={() => addSet(ex.id)}>
-                <Feather name="plus" size={14} color={colors.text} />
+                <Plus size={14} color={colors.text} />
                 <Text style={shared.btnGhostText}>Add Set</Text>
               </TouchableOpacity>
             </View>
           ))}
 
           <TouchableOpacity style={[shared.btn, shared.btnPrimary]} onPress={() => openPicker("workout")}>
-            <Feather name="plus" size={16} color={colors.accentInk} />
+            <Plus size={16} color={colors.accentInk} />
             <Text style={shared.btnPrimaryText}>Add Exercise</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -456,7 +461,7 @@ export default function WorkoutScreen() {
       <ScrollView contentContainerStyle={shared.content}>
         <Text style={[shared.h1, { marginBottom: 16, marginTop: 8 }]}>Workout</Text>
         <TouchableOpacity style={[shared.btn, shared.btnPrimary, { marginBottom: 22, paddingVertical: 16 }]} onPress={() => startWorkout(null)}>
-          <Feather name="play" size={16} color={colors.accentInk} />
+          <Play size={16} color={colors.accentInk} />
           <Text style={shared.btnPrimaryText}>Start Empty Workout</Text>
         </TouchableOpacity>
 
@@ -465,12 +470,12 @@ export default function WorkoutScreen() {
           {TEMPLATES.filter((t) => !hiddenDefaultIds.includes(t.id)).map((t) => (
             <TouchableOpacity key={t.id} style={[shared.card, { width: 160, marginRight: 10 }]} onPress={() => startWorkout(t)}>
               <View style={shared.row}>
-                <Feather name="activity" size={18} color={colors.accent} style={{ marginBottom: 10 }} />
+                <Dumbbell size={18} color={colors.accent} style={{ marginBottom: 10 }} />
                 <TouchableOpacity
                   onPress={() => hideDefaultTemplate(t.id)}
                   hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                 >
-                  <Feather name="trash-2" size={13} color={colors.dim} />
+                  <Trash size={13} color={colors.dim} />
                 </TouchableOpacity>
               </View>
               <Text style={{ color: colors.text, fontWeight: "600", fontSize: 14 }}>{t.name}</Text>
@@ -480,9 +485,9 @@ export default function WorkoutScreen() {
           {customTemplates.map((t) => (
             <TouchableOpacity key={t.id} style={[shared.card, { width: 160, marginRight: 10 }]} onPress={() => startWorkout(t)}>
               <View style={shared.row}>
-                <Feather name="star" size={18} color={colors.accent} style={{ marginBottom: 10 }} />
+                <Star size={18} color={colors.accent} style={{ marginBottom: 10 }} />
                 <TouchableOpacity onPress={() => deleteTemplate(t.id)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-                  <Feather name="trash-2" size={13} color={colors.dim} />
+                  <Trash size={13} color={colors.dim} />
                 </TouchableOpacity>
               </View>
               <Text style={{ color: colors.text, fontWeight: "600", fontSize: 14 }}>{t.name}</Text>
@@ -493,7 +498,7 @@ export default function WorkoutScreen() {
             style={[shared.card, { width: 130, marginRight: 10, alignItems: "center", justifyContent: "center", borderStyle: "dashed" }]}
             onPress={openBuilder}
           >
-            <Feather name="plus-circle" size={22} color={colors.accent} style={{ marginBottom: 8 }} />
+            <CirclePlus size={22} color={colors.accent} style={{ marginBottom: 8 }} />
             <Text style={{ color: colors.text, fontWeight: "600", fontSize: 12.5, textAlign: "center" }}>Create Template</Text>
           </TouchableOpacity>
         </ScrollView>

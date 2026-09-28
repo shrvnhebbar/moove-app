@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Modal } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
+import { X } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import TrendChart from "../components/TrendChart";
@@ -63,7 +63,7 @@ export default function TrendsScreen({ visible, onClose }) {
           <View style={[shared.row, { paddingTop: 12, marginBottom: 16 }]}>
             <Text style={shared.h2}>Trends</Text>
             <TouchableOpacity style={shared.iconBtn} onPress={onClose}>
-              <Feather name="x" size={18} color={colors.text} />
+              <X size={18} color={colors.text} />
             </TouchableOpacity>
           </View>
 

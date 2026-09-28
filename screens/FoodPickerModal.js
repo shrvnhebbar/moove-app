@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, TextInput, TouchableOpacity, Modal, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
+import { X, Trash, Plus, Search, ChefHat, ListPlus, PenLine, Save } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import { INDIAN_FOODS, FOOD_CATEGORIES } from "../data/indianFoods";
@@ -219,7 +219,7 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
           <View style={[shared.row, { marginBottom: 4 }]}>
             <Text style={shared.h3}>{quantityTarget?.item.name}</Text>
             <TouchableOpacity onPress={() => setQuantityTarget(null)}>
-              <Feather name="x" size={18} color={colors.dim} />
+              <X size={18} color={colors.dim} />
             </TouchableOpacity>
           </View>
           <Text style={[shared.label, { marginBottom: 14 }]}>
@@ -255,6 +255,7 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
           )}
 
           <TouchableOpacity style={[shared.btn, shared.btnPrimary]} onPress={confirmQuantity}>
+            <Plus size={16} color={colors.accentInk} />
             <Text style={shared.btnPrimaryText}>
               {quantityTarget?.mode === "meal" ? `Add to ${mealName}` : "Add Ingredient"}
             </Text>
@@ -270,7 +271,7 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
         <View style={[shared.row, { paddingHorizontal: 18, paddingTop: 12, paddingBottom: 4 }]}>
           <Text style={shared.h2}>Add Ingredient</Text>
           <TouchableOpacity style={shared.iconBtn} onPress={() => setIngredientPickerVisible(false)}>
-            <Feather name="x" size={18} color={colors.text} />
+            <X size={18} color={colors.text} />
           </TouchableOpacity>
         </View>
         <View style={{ paddingHorizontal: 18, paddingTop: 12 }}>
@@ -305,14 +306,14 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
         <View style={[shared.row, { paddingHorizontal: 18, paddingTop: 12, paddingBottom: 4 }]}>
           <Text style={shared.h2}>Add Food</Text>
           <TouchableOpacity style={shared.iconBtn} onPress={onClose}>
-            <Feather name="x" size={18} color={colors.text} />
+            <X size={18} color={colors.text} />
           </TouchableOpacity>
         </View>
 
         <View style={{ flexDirection: "row", paddingHorizontal: 18, marginTop: 14, gap: 8 }}>
           {[
-            { key: "browse", label: "Browse" },
-            { key: "custom", label: "Create Custom" },
+            { key: "browse", label: "Browse", icon: Search },
+            { key: "custom", label: "Create Custom", icon: ChefHat },
           ].map((t) => {
             const isActive = tab === t.key;
             return (
@@ -325,6 +326,7 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
                   isActive ? shared.btnPrimary : shared.btnGhost,
                 ]}
               >
+                <t.icon size={15} color={isActive ? colors.accentInk : colors.text} />
                 <Text style={isActive ? shared.btnPrimaryText : shared.btnGhostText}>{t.label}</Text>
               </TouchableOpacity>
             );
@@ -359,8 +361,8 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
           <ScrollView contentContainerStyle={shared.content} style={{ marginTop: 14 }}>
             <View style={{ flexDirection: "row", gap: 8, marginBottom: 20 }}>
               {[
-                { key: "ingredients", label: "From Ingredients" },
-                { key: "manual", label: "Manual Entry" },
+                { key: "ingredients", label: "From Ingredients", icon: ListPlus },
+                { key: "manual", label: "Manual Entry", icon: PenLine },
               ].map((m) => {
                 const isActive = customMode === m.key;
                 return (
@@ -368,12 +370,13 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
                     key={m.key}
                     onPress={() => setCustomMode(m.key)}
                     style={{
-                      flex: 1, paddingVertical: 9, borderRadius: 20,
+                      flex: 1, flexDirection: "row", gap: 6, paddingVertical: 9, borderRadius: 20,
                       backgroundColor: isActive ? colors.accent : colors.surface2,
                       borderWidth: 1, borderColor: isActive ? colors.accent : colors.border,
                       alignItems: "center", justifyContent: "center",
                     }}
                   >
+                    <m.icon size={14} color={isActive ? colors.accentInk : colors.dim} />
                     <Text
                       style={{
                         fontSize: 12.5, fontWeight: "600", color: isActive ? colors.accentInk : colors.dim,
@@ -409,13 +412,13 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
                       </Text>
                     </View>
                     <TouchableOpacity onPress={() => removeIngredient(ing.id)}>
-                      <Feather name="trash-2" size={15} color={colors.dim} />
+                      <Trash size={15} color={colors.dim} />
                     </TouchableOpacity>
                   </View>
                 ))}
 
                 <TouchableOpacity style={[shared.btn, shared.btnGhost, { marginTop: 4, marginBottom: 20 }]} onPress={() => setIngredientPickerVisible(true)}>
-                  <Feather name="plus" size={14} color={colors.text} />
+                  <Plus size={14} color={colors.text} />
                   <Text style={shared.btnGhostText}>Add Ingredient</Text>
                 </TouchableOpacity>
 
@@ -436,6 +439,7 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
                   onPress={submitCustomFood}
                   disabled={!builderName.trim() || builderIngredients.length === 0}
                 >
+                  <Save size={16} color={colors.accentInk} />
                   <Text style={shared.btnPrimaryText}>Save Custom Food</Text>
                 </TouchableOpacity>
               </>
@@ -506,6 +510,7 @@ export default function FoodPickerModal({ visible, mealName, onClose, onAddFood 
                   onPress={submitManualFood}
                   disabled={!manualName.trim() || !manualGrams}
                 >
+                  <Save size={16} color={colors.accentInk} />
                   <Text style={shared.btnPrimaryText}>Save Custom Food</Text>
                 </TouchableOpacity>
               </>

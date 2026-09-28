@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
+import { User, Award, Settings, ChevronRight, LogOut } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import { useAuth } from "../context/AuthContext";
@@ -10,9 +10,9 @@ import { usePersonalInfo } from "../hooks/usePersonalInfo";
 import PersonalInfoModal from "./PersonalInfoModal";
 
 const MENU = [
-  { icon: "user", label: "Personal Information", key: "personal" },
-  { icon: "award", label: "Achievements", key: "achievements" },
-  { icon: "settings", label: "Settings", key: "settings" },
+  { icon: User, label: "Personal Information", key: "personal" },
+  { icon: Award, label: "Achievements", key: "achievements" },
+  { icon: Settings, label: "Settings", key: "settings" },
 ];
 
 export default function ProfileScreen() {
@@ -31,7 +31,7 @@ export default function ProfileScreen() {
       <ScrollView style={shared.screen} contentContainerStyle={[shared.content, { paddingTop: 24 }]}>
         <View style={{ alignItems: "center", marginBottom: 24 }}>
           <View style={{ width: 76, height: 76, borderRadius: 38, backgroundColor: colors.surface2, borderWidth: 1, borderColor: colors.border, alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
-            <Feather name="user" size={32} color={colors.dim} />
+            <User size={32} color={colors.dim} />
           </View>
           <Text style={shared.h2}>{info.name || user?.displayName || "Athlete"}</Text>
           <Text style={[shared.label, { marginTop: 2 }]}>{user?.email}</Text>
@@ -55,15 +55,15 @@ export default function ProfileScreen() {
         {MENU.map((it) => (
           <TouchableOpacity key={it.key} style={[shared.card, shared.row, { marginBottom: 10 }]} onPress={() => handleMenuPress(it.key)}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-              <Feather name={it.icon} size={17} color={colors.dim} />
+              <it.icon size={17} color={colors.dim} />
               <Text style={{ color: colors.text, fontSize: 14 }}>{it.label}</Text>
             </View>
-            <Feather name="chevron-right" size={16} color={colors.dim} />
+            <ChevronRight size={16} color={colors.dim} />
           </TouchableOpacity>
         ))}
 
         <TouchableOpacity style={[shared.btn, shared.btnOutline, { marginTop: 12 }]} onPress={logout}>
-          <Feather name="log-out" size={15} color={colors.text} />
+          <LogOut size={15} color={colors.text} />
           <Text style={shared.btnOutlineText}>Log Out</Text>
         </TouchableOpacity>
       </ScrollView>

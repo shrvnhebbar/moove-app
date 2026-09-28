@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, TextInput, TouchableOpacity, Modal, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
+import { X, Save } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import { usePersonalInfo } from "../hooks/usePersonalInfo";
@@ -49,7 +49,7 @@ export default function PersonalInfoModal({ visible, onClose }) {
           <View style={[shared.row, { paddingTop: 12, marginBottom: 20 }]}>
             <Text style={shared.h2}>Personal Information</Text>
             <TouchableOpacity style={shared.iconBtn} onPress={onClose}>
-              <Feather name="x" size={18} color={colors.text} />
+              <X size={18} color={colors.text} />
             </TouchableOpacity>
           </View>
 
@@ -140,6 +140,7 @@ export default function PersonalInfoModal({ visible, onClose }) {
           </View>
 
           <TouchableOpacity style={[shared.btn, shared.btnPrimary]} onPress={handleSave} disabled={saving}>
+            <Save size={16} color={colors.accentInk} />
             <Text style={shared.btnPrimaryText}>{saving ? "Saving..." : "Save"}</Text>
           </TouchableOpacity>
         </ScrollView>
