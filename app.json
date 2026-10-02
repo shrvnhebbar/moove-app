@@ -22,6 +22,20 @@
     },
     "web": {
       "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow MOOVE to access your photos to set a profile picture.",
+          "cameraPermission": "Allow MOOVE to use the camera to take a profile picture."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b362eb3f-f6d6-49aa-aebd-591954a67232"
+      }
     }
   }
 }
