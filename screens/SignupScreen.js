@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Alert } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { ArrowLeft, UserPlus } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
@@ -30,7 +30,7 @@ export default function SignupScreen({ navigation }) {
     <KeyboardAvoidingView style={shared.screen} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <View style={[shared.content, { paddingTop: 70, flex: 1 }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 24 }}>
-          <Feather name="arrow-left" size={22} color={colors.text} />
+          <ArrowLeft size={22} color={colors.text} />
         </TouchableOpacity>
 
         <Text style={{ color: colors.text, fontSize: 26, marginBottom: 6, fontWeight: "700" }}>Create your account</Text>
@@ -54,7 +54,14 @@ export default function SignupScreen({ navigation }) {
         <TextInput style={shared.input} placeholder="At least 6 characters" placeholderTextColor={colors.dim2} secureTextEntry value={password} onChangeText={setPassword} />
 
         <TouchableOpacity style={[shared.btn, shared.btnPrimary, { marginTop: 24 }]} onPress={onSubmit} disabled={loading}>
-          {loading ? <ActivityIndicator color={colors.accentInk} /> : <Text style={shared.btnPrimaryText}>Sign Up</Text>}
+          {loading ? (
+            <ActivityIndicator color={colors.accentInk} />
+          ) : (
+            <>
+              <UserPlus size={16} color={colors.accentInk} />
+              <Text style={shared.btnPrimaryText}>Sign Up</Text>
+            </>
+          )}
         </TouchableOpacity>
 
         <View style={{ flex: 1 }} />

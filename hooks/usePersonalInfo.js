@@ -3,7 +3,7 @@ import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useAuth } from "../context/AuthContext";
 
-const DEFAULTS = { name: "", age: "", sex: "male", weightKg: "", heightCm: "", bodyFatPct: "" };
+const DEFAULTS = { name: "", age: "", sex: "male", weightKg: "", heightCm: "", bodyFatPct: "", goal: "maintain" };
 
 // Reads/writes personal info fields on: users/{uid}
 export function usePersonalInfo() {
@@ -23,6 +23,7 @@ export function usePersonalInfo() {
         weightKg: data.weightKg != null ? String(data.weightKg) : "",
         heightCm: data.heightCm != null ? String(data.heightCm) : "",
         bodyFatPct: data.bodyFatPct != null ? String(data.bodyFatPct) : "",
+        goal: data.goal ?? "maintain",
       });
       setLoading(false);
     });
@@ -41,6 +42,7 @@ export function usePersonalInfo() {
           weightKg: next.weightKg === "" ? null : Number(next.weightKg),
           heightCm: next.heightCm === "" ? null : Number(next.heightCm),
           bodyFatPct: next.bodyFatPct === "" ? null : Number(next.bodyFatPct),
+          goal: next.goal,
         },
         { merge: true }
       );

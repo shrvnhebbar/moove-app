@@ -1,9 +1,10 @@
 {
   "expo": {
-    "name": "FORM",
+    "name": "MOOVE",
     "slug": "form-fitness-app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0B0B0D",
     "splash": {
@@ -12,6 +13,7 @@
     "android": {
       "package": "com.yourcompany.form",
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0B0B0D"
       }
     },
@@ -20,6 +22,20 @@
     },
     "web": {
       "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow MOOVE to access your photos to set a profile picture.",
+          "cameraPermission": "Allow MOOVE to use the camera to take a profile picture."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b362eb3f-f6d6-49aa-aebd-591954a67232"
+      }
     }
   }
 }

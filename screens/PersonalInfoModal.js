@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, TextInput, TouchableOpacity, Modal, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
+import { X, Save } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
+import Dropdown from "../components/Dropdown";
 import { usePersonalInfo } from "../hooks/usePersonalInfo";
+import { useLogMetric } from "../hooks/useMetricLogs";
+import { useAchievements } from "../hooks/useAchievements";
 import { calcBMI, bmiCategory, calcFatMass, calcLeanMass, calcMuscleMassEstimate } from "../utils/bodyMetrics";
+
+const GOALS = [
+  { key: "lose", label: "Lose Weight" },
+  { key: "maintain", label: "Maintain" },
+  { key: "gain", label: "Gain Weight" },
+];
 
 export default function PersonalInfoModal({ visible, onClose }) {
   const { info, savePersonalInfo } = usePersonalInfo();
+  const logMetric = useLogMetric();
+  const { checkWeightGoalProgress } = useAchievements();
   const [form, setForm] = useState(info);
   const [saving, setSaving] = useState(false);
 
@@ -25,9 +36,13 @@ export default function PersonalInfoModal({ visible, onClose }) {
   const muscleMass = calcMuscleMassEstimate(leanMass);
 
   const handleSave = async () => {
+    const previousWeight = info.weightKg;
     setSaving(true);
     try {
       await savePersonalInfo(form);
+      await logMetric("weight", form.weightKg);
+      await logMetric("bodyFat", form.bodyFatPct);
+      await checkWeightGoalProgress(form.goal, previousWeight, form.weightKg);
       onClose();
     } catch (e) {
       Alert.alert("Couldn't save", e.message);
@@ -45,7 +60,7 @@ export default function PersonalInfoModal({ visible, onClose }) {
           <View style={[shared.row, { paddingTop: 12, marginBottom: 20 }]}>
             <Text style={shared.h2}>Personal Information</Text>
             <TouchableOpacity style={shared.iconBtn} onPress={onClose}>
-              <Feather name="x" size={18} color={colors.text} />
+              <X size={18} color={colors.text} />
             </TouchableOpacity>
           </View>
 
@@ -88,6 +103,11 @@ export default function PersonalInfoModal({ visible, onClose }) {
               <Text style={[shared.label, { marginBottom: 6 }]}>Height (cm)</Text>
               <TextInput style={shared.input} placeholder="175" placeholderTextColor={colors.dim2} keyboardType="numeric" value={form.heightCm} onChangeText={(v) => set("heightCm")(v.replace(/[^0-9.]/g, ""))} />
             </View>
+          </View>
+
+          <Text style={[shared.label, { marginBottom: 6 }]}>Goal</Text>
+          <View style={{ marginBottom: 20 }}>
+            <Dropdown value={form.goal} options={GOALS} onChange={set("goal")} placeholder="Select a goal" />
           </View>
 
           <Text style={[shared.label, { marginBottom: 6 }]}>Body fat % (from a scale, calipers, or scan)</Text>
@@ -136,6 +156,7 @@ export default function PersonalInfoModal({ visible, onClose }) {
           </View>
 
           <TouchableOpacity style={[shared.btn, shared.btnPrimary]} onPress={handleSave} disabled={saving}>
+            <Save size={16} color={colors.accentInk} />
             <Text style={shared.btnPrimaryText}>{saving ? "Saving..." : "Save"}</Text>
           </TouchableOpacity>
         </ScrollView>

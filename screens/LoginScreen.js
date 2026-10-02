@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
+import { Dumbbell, Eye, EyeOff, LogIn } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import { useAuth } from "../context/AuthContext";
@@ -31,7 +31,7 @@ export default function LoginScreen({ navigation }) {
         <View style={[shared.content, { paddingTop: 70, flex: 1 }]}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 46 }}>
             <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: colors.accent, alignItems: "center", justifyContent: "center" }}>
-              <Feather name="activity" size={20} color={colors.accentInk} />
+              <Dumbbell size={20} color={colors.accentInk} />
             </View>
             <Text style={{ color: colors.text, fontSize: 24, fontWeight: "700" }}>FORM</Text>
           </View>
@@ -61,12 +61,19 @@ export default function LoginScreen({ navigation }) {
               onChangeText={setPassword}
             />
             <TouchableOpacity style={{ position: "absolute", right: 12, top: 13 }} onPress={() => setShowPw(!showPw)}>
-              <Feather name={showPw ? "eye-off" : "eye"} size={18} color={colors.dim} />
+              {showPw ? <EyeOff size={18} color={colors.dim} /> : <Eye size={18} color={colors.dim} />}
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity style={[shared.btn, shared.btnPrimary, { marginTop: 24 }]} onPress={onSubmit} disabled={loading}>
-            {loading ? <ActivityIndicator color={colors.accentInk} /> : <Text style={shared.btnPrimaryText}>Log In</Text>}
+            {loading ? (
+              <ActivityIndicator color={colors.accentInk} />
+            ) : (
+              <>
+                <LogIn size={16} color={colors.accentInk} />
+                <Text style={shared.btnPrimaryText}>Log In</Text>
+              </>
+            )}
           </TouchableOpacity>
 
           <View style={{ flex: 1 }} />
