@@ -8,6 +8,7 @@ import {
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import { useWorkouts } from "../hooks/useWorkouts";
+import { useAchievements } from "../hooks/useAchievements";
 import { useTemplates } from "../hooks/useTemplates";
 import { useHiddenTemplates } from "../hooks/useHiddenTemplates";
 import { EXERCISES, CATEGORIES } from "../data/exercises";
@@ -23,6 +24,7 @@ const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 
 
 export default function WorkoutScreen() {
   const { history, saveWorkout } = useWorkouts();
+  const { checkWorkoutAchievements } = useAchievements();
   const { templates: customTemplates, saveTemplate, deleteTemplate } = useTemplates();
   const { hiddenIds: hiddenDefaultIds, hideTemplate: hideDefaultTemplate } = useHiddenTemplates();
   const [activeWorkout, setActiveWorkout] = useState(null);
@@ -153,7 +155,7 @@ export default function WorkoutScreen() {
         }
       })
     );
-    await saveWorkout({
+    const workoutData = {
       name: activeWorkout.name,
       date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }),
       duration: fmt(elapsed),
@@ -163,11 +165,9 @@ export default function WorkoutScreen() {
         name: ex.name,
         sets: ex.sets.map((s) => ({ weight: s.weight, reps: s.reps, done: s.done })),
       })),
-      exercises: activeWorkout.exercises.map((ex) => ({
-        name: ex.name,
-        sets: ex.sets.map((s) => ({ weight: s.weight, reps: s.reps, done: s.done })),
-      })),
-    });
+    };
+    await saveWorkout(workoutData);
+    await checkWorkoutAchievements(history, workoutData);
     setTimerRunning(false);
     setElapsed(0);
     setActiveWorkout(null);

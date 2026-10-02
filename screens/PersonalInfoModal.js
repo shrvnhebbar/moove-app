@@ -6,11 +6,19 @@ import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import { usePersonalInfo } from "../hooks/usePersonalInfo";
 import { useLogMetric } from "../hooks/useMetricLogs";
+import { useAchievements } from "../hooks/useAchievements";
 import { calcBMI, bmiCategory, calcFatMass, calcLeanMass, calcMuscleMassEstimate } from "../utils/bodyMetrics";
+
+const GOALS = [
+  { key: "lose", label: "Lose Weight" },
+  { key: "maintain", label: "Maintain" },
+  { key: "gain", label: "Gain Weight" },
+];
 
 export default function PersonalInfoModal({ visible, onClose }) {
   const { info, savePersonalInfo } = usePersonalInfo();
   const logMetric = useLogMetric();
+  const { checkWeightGoalProgress } = useAchievements();
   const [form, setForm] = useState(info);
   const [saving, setSaving] = useState(false);
 
@@ -27,11 +35,13 @@ export default function PersonalInfoModal({ visible, onClose }) {
   const muscleMass = calcMuscleMassEstimate(leanMass);
 
   const handleSave = async () => {
+    const previousWeight = info.weightKg;
     setSaving(true);
     try {
       await savePersonalInfo(form);
       await logMetric("weight", form.weightKg);
       await logMetric("bodyFat", form.bodyFatPct);
+      await checkWeightGoalProgress(form.goal, previousWeight, form.weightKg);
       onClose();
     } catch (e) {
       Alert.alert("Couldn't save", e.message);
@@ -92,6 +102,25 @@ export default function PersonalInfoModal({ visible, onClose }) {
               <Text style={[shared.label, { marginBottom: 6 }]}>Height (cm)</Text>
               <TextInput style={shared.input} placeholder="175" placeholderTextColor={colors.dim2} keyboardType="numeric" value={form.heightCm} onChangeText={(v) => set("heightCm")(v.replace(/[^0-9.]/g, ""))} />
             </View>
+          </View>
+
+          <Text style={[shared.label, { marginBottom: 6 }]}>Goal</Text>
+          <View style={{ flexDirection: "row", gap: 8, marginBottom: 20 }}>
+            {GOALS.map((g) => (
+              <TouchableOpacity
+                key={g.key}
+                onPress={() => set("goal")(g.key)}
+                style={{
+                  flex: 1, paddingVertical: 13, borderRadius: 12, alignItems: "center",
+                  backgroundColor: form.goal === g.key ? colors.accent : colors.surface2,
+                  borderWidth: 1, borderColor: form.goal === g.key ? colors.accent : colors.border,
+                }}
+              >
+                <Text style={{ fontSize: 12.5, fontWeight: "600", color: form.goal === g.key ? colors.accentInk : colors.dim, textAlign: "center" }}>
+                  {g.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
 
           <Text style={[shared.label, { marginBottom: 6 }]}>Body fat % (from a scale, calipers, or scan)</Text>

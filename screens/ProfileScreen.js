@@ -9,8 +9,10 @@ import { useAuth } from "../context/AuthContext";
 import { useWorkouts } from "../hooks/useWorkouts";
 import { usePersonalInfo } from "../hooks/usePersonalInfo";
 import { useProfilePicture } from "../hooks/useProfilePicture";
+import { getWorkoutStreak } from "../hooks/useAchievements";
 import PersonalInfoModal from "./PersonalInfoModal";
 import AccountModal from "./AccountModal";
+import AchievementsModal from "./AchievementsModal";
 
 const MENU = [
   { icon: User, label: "Personal Information", key: "personal" },
@@ -26,11 +28,13 @@ export default function ProfileScreen() {
   const { photoURL, uploading, uploadProfilePicture } = useProfilePicture();
   const [personalInfoVisible, setPersonalInfoVisible] = useState(false);
   const [accountVisible, setAccountVisible] = useState(false);
+  const [achievementsVisible, setAchievementsVisible] = useState(false);
 
   const handleMenuPress = (key) => {
     if (key === "personal") setPersonalInfoVisible(true);
     if (key === "account") setAccountVisible(true);
-    // "achievements" and "settings" not wired up yet
+    if (key === "achievements") setAchievementsVisible(true);
+    // "settings" not wired up yet
   };
 
   const handleUpload = async (uri) => {
@@ -108,7 +112,7 @@ export default function ProfileScreen() {
             <Text style={shared.label}>Workouts</Text>
           </View>
           <View style={[shared.card, { flex: 1, alignItems: "center" }]}>
-            <Text style={{ ...shared.num, fontSize: 20 }}>12</Text>
+            <Text style={{ ...shared.num, fontSize: 20 }}>{getWorkoutStreak(history)}</Text>
             <Text style={shared.label}>Day streak</Text>
           </View>
           <View style={[shared.card, { flex: 1, alignItems: "center" }]}>
@@ -135,6 +139,7 @@ export default function ProfileScreen() {
 
       <PersonalInfoModal visible={personalInfoVisible} onClose={() => setPersonalInfoVisible(false)} />
       <AccountModal visible={accountVisible} onClose={() => setAccountVisible(false)} />
+      <AchievementsModal visible={achievementsVisible} onClose={() => setAchievementsVisible(false)} />
     </SafeAreaView>
   );
 }
