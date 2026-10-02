@@ -1,7 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { collection, addDoc, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { TrendingDown, TrendingUp, Trophy, Dumbbell, Medal, Flame } from "lucide-react-native";
 import { db } from "../firebase/config";
 import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
 
 const WORKOUT_COUNT_MILESTONES = [1, 10, 25, 50, 100];
 // Fun comparisons for crossing a lifetime-volume milestone.
@@ -33,12 +35,54 @@ export function getWorkoutStreak(history) {
   return streakFromDates(history.map((h) => h.createdAt?.toDate?.()));
 }
 
+// Shared between the Achievements list and the unlock toast, so both describe
+// a given achievement doc identically.
+export function describeAchievement(item) {
+  switch (item.type) {
+    case "weight_goal_progress": {
+      const losing = item.goal === "lose";
+      return {
+        icon: losing ? TrendingDown : TrendingUp,
+        title: `${losing ? "Lost" : "Gained"} ${item.deltaKg}kg toward your goal`,
+        subtitle: `${item.fromWeight}kg → ${item.toWeight}kg`,
+      };
+    }
+    case "workout_count":
+      return {
+        icon: Trophy,
+        title: item.count === 1 ? "First Workout Logged!" : `${item.count} Workouts Logged!`,
+        subtitle: "Workout milestone",
+      };
+    case "volume_milestone":
+      return {
+        icon: Dumbbell,
+        title: `${item.volume.toLocaleString()}kg Lifted!`,
+        subtitle: `That's about the weight of ${item.comparison}`,
+      };
+    case "personal_record":
+      return {
+        icon: Medal,
+        title: `New PR: ${item.exercise} — ${item.weight}kg`,
+        subtitle: `Up from ${item.previousWeight}kg`,
+      };
+    case "workout_streak":
+      return {
+        icon: Flame,
+        title: `${item.days}-Day Workout Streak!`,
+        subtitle: "Consistency",
+      };
+    default:
+      return null;
+  }
+}
+
 // Reads/writes: users/{uid}/achievements/{autoId}
 // Each doc is one unlocked achievement. `type` tells the Achievements screen
 // how to render it: "weight_goal_progress", "workout_count", "volume_milestone",
 // "personal_record", "workout_streak".
 export function useAchievements() {
   const { user } = useAuth();
+  const { showToast } = useToast();
   const [achievements, setAchievements] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,8 +103,12 @@ export function useAchievements() {
         ...achievement,
         createdAt: serverTimestamp(),
       });
+      const info = describeAchievement(achievement);
+      if (info) {
+        showToast?.({ variant: "success", icon: info.icon, title: info.title, message: info.subtitle });
+      }
     },
-    [user]
+    [user, showToast]
   );
 
   // Compares weight before/after a Personal Info save against the user's goal,

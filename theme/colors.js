@@ -14,6 +14,7 @@ export const colors = {
   blue: "#22D3FF",
   ok: "#39FF7A",
   red: "#FF3B5C",
+  warning: "#FFD60A",
 };
 
 export const radii = { sm: 10, md: 14, lg: 20, pill: 999 };

@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { X, Save } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
+import Dropdown from "../components/Dropdown";
 import { usePersonalInfo } from "../hooks/usePersonalInfo";
 import { useLogMetric } from "../hooks/useMetricLogs";
 import { useAchievements } from "../hooks/useAchievements";
@@ -105,22 +106,8 @@ export default function PersonalInfoModal({ visible, onClose }) {
           </View>
 
           <Text style={[shared.label, { marginBottom: 6 }]}>Goal</Text>
-          <View style={{ flexDirection: "row", gap: 8, marginBottom: 20 }}>
-            {GOALS.map((g) => (
-              <TouchableOpacity
-                key={g.key}
-                onPress={() => set("goal")(g.key)}
-                style={{
-                  flex: 1, paddingVertical: 13, borderRadius: 12, alignItems: "center",
-                  backgroundColor: form.goal === g.key ? colors.accent : colors.surface2,
-                  borderWidth: 1, borderColor: form.goal === g.key ? colors.accent : colors.border,
-                }}
-              >
-                <Text style={{ fontSize: 12.5, fontWeight: "600", color: form.goal === g.key ? colors.accentInk : colors.dim, textAlign: "center" }}>
-                  {g.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          <View style={{ marginBottom: 20 }}>
+            <Dropdown value={form.goal} options={GOALS} onChange={set("goal")} placeholder="Select a goal" />
           </View>
 
           <Text style={[shared.label, { marginBottom: 6 }]}>Body fat % (from a scale, calipers, or scan)</Text>

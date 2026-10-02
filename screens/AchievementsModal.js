@@ -1,53 +1,14 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, Modal } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { X, Trophy, TrendingDown, TrendingUp, Dumbbell, Medal, Flame } from "lucide-react-native";
+import { X, Trophy } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
-import { useAchievements } from "../hooks/useAchievements";
+import { useAchievements, describeAchievement } from "../hooks/useAchievements";
 
 function formatDate(ts) {
   if (!ts?.toDate) return "";
   return ts.toDate().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-}
-
-function describeAchievement(item) {
-  switch (item.type) {
-    case "weight_goal_progress": {
-      const losing = item.goal === "lose";
-      return {
-        icon: losing ? TrendingDown : TrendingUp,
-        title: `${losing ? "Lost" : "Gained"} ${item.deltaKg}kg toward your goal`,
-        subtitle: `${item.fromWeight}kg → ${item.toWeight}kg`,
-      };
-    }
-    case "workout_count":
-      return {
-        icon: Trophy,
-        title: item.count === 1 ? "First Workout Logged!" : `${item.count} Workouts Logged!`,
-        subtitle: "Workout milestone",
-      };
-    case "volume_milestone":
-      return {
-        icon: Dumbbell,
-        title: `${item.volume.toLocaleString()}kg Lifted!`,
-        subtitle: `That's about the weight of ${item.comparison}`,
-      };
-    case "personal_record":
-      return {
-        icon: Medal,
-        title: `New PR: ${item.exercise} — ${item.weight}kg`,
-        subtitle: `Up from ${item.previousWeight}kg`,
-      };
-    case "workout_streak":
-      return {
-        icon: Flame,
-        title: `${item.days}-Day Workout Streak!`,
-        subtitle: "Consistency",
-      };
-    default:
-      return null;
-  }
 }
 
 function AchievementCard({ item }) {
