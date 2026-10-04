@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
 import { colors } from "./colors";
 
+// Fixed height for every single-line form field (shared.input: text inputs and
+// dropdowns) so they all line up regardless of how Android sizes the text inside.
+export const FIELD_HEIGHT = 50;
+
 export const shared = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { paddingHorizontal: 18, paddingBottom: 110, paddingTop: 8 },
@@ -23,7 +27,8 @@ export const shared = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 12,
-    paddingVertical: 13,
+    height: FIELD_HEIGHT,
+    paddingVertical: 0,
     paddingHorizontal: 14,
     color: colors.text,
     fontSize: 14.5,

@@ -421,12 +421,12 @@ export default function WorkoutScreen() {
                 <View key={s.id} style={[shared.row, { marginBottom: 8, gap: 6 }]}>
                   <Text style={{ width: 28, fontSize: 13, color: colors.dim, fontWeight: "700" }}>{i + 1}</Text>
                   <TextInput
-                    style={[shared.input, { flex: 1, textAlign: "center", paddingVertical: 9 }]}
+                    style={[shared.input, { flex: 1, textAlign: "center", height: 42 }]}
                     placeholder="0" placeholderTextColor={colors.dim2} keyboardType="numeric"
                     value={s.weight} onChangeText={(v) => updateSet(ex.id, s.id, "weight", v.replace(/[^0-9.]/g, ""))}
                   />
                   <TextInput
-                    style={[shared.input, { flex: 1, textAlign: "center", paddingVertical: 9 }]}
+                    style={[shared.input, { flex: 1, textAlign: "center", height: 42 }]}
                     placeholder="0" placeholderTextColor={colors.dim2} keyboardType="numeric"
                     value={s.reps} onChangeText={(v) => updateSet(ex.id, s.id, "reps", v.replace(/[^0-9]/g, ""))}
                   />

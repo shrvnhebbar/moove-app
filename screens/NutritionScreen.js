@@ -6,19 +6,19 @@ import { colors } from "../theme/colors";
 import { shared } from "../theme/shared";
 import Ring from "../components/Ring";
 import { useMeals, MEAL_NAMES } from "../hooks/useMeals";
+import { useCalorieGoal } from "../hooks/useCalorieGoal";
 import FoodPickerModal from "./FoodPickerModal";
-
-const CALORIE_GOAL = 2200;
-const MACRO_GOAL = { p: 150, c: 240, f: 70 };
 
 const fmt1 = (v) => Number(v || 0).toFixed(1);
 
 export default function NutritionScreen() {
   const { meals, totals, addFood, removeFood } = useMeals();
+  const { calorieGoal, macroGoal } = useCalorieGoal();
   const [pickerMeal, setPickerMeal] = useState(null);
 
-  const remaining = CALORIE_GOAL - totals.kcal;
-  const macroPct = (v, goal) => Math.min(v / goal, 1);
+  const remaining = calorieGoal - totals.kcal;
+  // A macro goal can be 0 (carbs when protein + fat use up the whole calorie target).
+  const macroPct = (v, goal) => (goal > 0 ? Math.min(v / goal, 1) : v > 0 ? 1 : 0);
 
   return (
     <SafeAreaView style={shared.screen} edges={["top"]}>
@@ -27,7 +27,7 @@ export default function NutritionScreen() {
 
         <View style={[shared.card, { marginBottom: 16 }]}>
           <View style={shared.row}>
-            <Ring pct={totals.kcal / CALORIE_GOAL} color={colors.accent} size={78} stroke={8} value={remaining >= 0 ? remaining : 0} sub="left" />
+            <Ring pct={totals.kcal / calorieGoal} color={colors.accent} size={78} stroke={8} value={remaining >= 0 ? remaining : 0} sub="left" />
             <View style={{ flex: 1, marginLeft: 18 }}>
               <View style={[shared.row, { marginBottom: 6 }]}>
                 <Text style={shared.label}>Consumed</Text>
@@ -35,7 +35,7 @@ export default function NutritionScreen() {
               </View>
               <View style={[shared.row, { marginBottom: 6 }]}>
                 <Text style={shared.label}>Goal</Text>
-                <Text style={{ ...shared.num, fontSize: 13 }}>{CALORIE_GOAL} kcal</Text>
+                <Text style={{ ...shared.num, fontSize: 13 }}>{calorieGoal} kcal</Text>
               </View>
               <View style={shared.row}>
                 <Text style={shared.label}>Status</Text>
@@ -47,9 +47,9 @@ export default function NutritionScreen() {
           </View>
           <View style={shared.divider} />
           {[
-            { key: "p", label: "Protein", color: colors.orange, goal: MACRO_GOAL.p },
-            { key: "c", label: "Carbs", color: colors.blue, goal: MACRO_GOAL.c },
-            { key: "f", label: "Fat", color: colors.accent, goal: MACRO_GOAL.f },
+            { key: "p", label: "Protein", color: colors.orange, goal: macroGoal.p },
+            { key: "c", label: "Carbs", color: colors.blue, goal: macroGoal.c },
+            { key: "f", label: "Fat", color: colors.accent, goal: macroGoal.f },
           ].map((m) => (
             <View key={m.key} style={{ marginBottom: 10 }}>
               <View style={[shared.row, { marginBottom: 4 }]}>

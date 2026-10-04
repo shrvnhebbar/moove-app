@@ -40,6 +40,14 @@ export function calcLeanMass(weightKg, fatMassKg) {
   return w - fatMassKg;
 }
 
+// Weight range that keeps BMI inside the "Normal" band (18.5–24.9) for a given height.
+export function calcHealthyWeightRange(heightCm) {
+  const h = Number(heightCm);
+  if (!h) return null;
+  const heightM = h / 100;
+  return { min: 18.5 * heightM * heightM, max: 24.9 * heightM * heightM };
+}
+
 // Skeletal muscle is a subset of lean mass — this uses a common ~50% approximation.
 export function calcMuscleMassEstimate(leanMassKg) {
   if (leanMassKg == null) return null;

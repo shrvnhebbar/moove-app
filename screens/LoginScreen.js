@@ -60,7 +60,7 @@ export default function LoginScreen({ navigation }) {
               value={password}
               onChangeText={setPassword}
             />
-            <TouchableOpacity style={{ position: "absolute", right: 12, top: 13 }} onPress={() => setShowPw(!showPw)}>
+            <TouchableOpacity style={{ position: "absolute", right: 12, top: 16 }} onPress={() => setShowPw(!showPw)}>
               {showPw ? <EyeOff size={18} color={colors.dim} /> : <Eye size={18} color={colors.dim} />}
             </TouchableOpacity>
           </View>

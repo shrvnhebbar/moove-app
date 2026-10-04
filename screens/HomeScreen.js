@@ -9,6 +9,7 @@ import Ring from "../components/Ring";
 import { useAuth } from "../context/AuthContext";
 import { useMeals } from "../hooks/useMeals";
 import { usePersonalInfo } from "../hooks/usePersonalInfo";
+import { useCalorieGoal } from "../hooks/useCalorieGoal";
 import TrendsScreen from "./TrendsScreen";
 
 // Steps/calories-burned/active-minutes are mocked for now. Swap for Google Fit /
@@ -23,17 +24,17 @@ const DAY_STATS = [
   { day: "Sat", date: 13, steps: 4700, distance: 3.5, kcalBurn: 178, mins: 60 },
   { day: "Sun", date: 14, steps: 3900, distance: 2.9, kcalBurn: 142, mins: 47 },
 ];
-const CALORIE_GOAL = 2200;
 
 export default function HomeScreen({ navigation }) {
   const { user } = useAuth();
   const { info } = usePersonalInfo();
   const { totals } = useMeals();
+  const { calorieGoal } = useCalorieGoal();
   const [selectedDay, setSelectedDay] = useState(4);
   const [trendsVisible, setTrendsVisible] = useState(false);
   const today = DAY_STATS[selectedDay];
   const maxSteps = Math.max(...DAY_STATS.map((d) => d.steps));
-  const calPct = totals.kcal / CALORIE_GOAL;
+  const calPct = totals.kcal / calorieGoal;
   const firstName = (info.name || user?.displayName || "there").split(" ")[0];
 
   return (
@@ -118,7 +119,7 @@ export default function HomeScreen({ navigation }) {
               <Text style={[shared.label, { marginBottom: 4 }]}>Calories intake</Text>
               <Text style={shared.num}>
                 <Text style={{ fontSize: 22 }}>{totals.kcal}</Text>
-                <Text style={{ fontSize: 13, fontWeight: "500", color: colors.dim }}> / {CALORIE_GOAL} kcal</Text>
+                <Text style={{ fontSize: 13, fontWeight: "500", color: colors.dim }}> / {calorieGoal} kcal</Text>
               </Text>
             </View>
             <Ring pct={calPct} color={colors.accent} value={`${Math.round(calPct * 100)}%`} size={54} />
